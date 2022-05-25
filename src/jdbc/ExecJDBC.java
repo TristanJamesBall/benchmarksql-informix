@@ -60,10 +60,11 @@ public class ExecJDBC {
 	       {
 		   sql.append(line.replaceAll("\\\\;", ";"));
 		   if (line.endsWith(";")) {
-		      String query = sql.toString();
 
+		      String query = sql.toString();
 		      execJDBC(stmt, query.substring(0, query.length() - 1));
 		      sql = new StringBuffer();
+
 		   } else {
 		     sql.append("\n");
 		   }
@@ -99,15 +100,26 @@ public class ExecJDBC {
   } // end main
 
 
-  static void execJDBC(Statement stmt, String query) {
+  static void execJDBC(Statement stmt, String query) throws Exception {
+    
+    int tryCount = 0;
+    int maxTries = 3;
 
     System.out.println(query + ";");
 
-    try {
-      stmt.execute(query);
-    }catch(SQLException se) {
-      System.out.println(se.getMessage());
-    } // end try
+    while(tryCount < maxTries) {
+      try {
+        stmt.execute(query);
+        break;    
+      } catch(SQLException se) {
+        System.out.println(se.getMessage() + " ( Retrying, " + tryCount + "/" + maxTries + ")");
+        
+        if (++tryCount == maxTries) {
+          		throw new Exception("Too Many retries: " + 	se.getMessage());
+        } 
+      }
+    }
+    
 
   } // end execJDBCCommand
 

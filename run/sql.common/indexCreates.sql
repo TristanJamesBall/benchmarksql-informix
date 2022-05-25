@@ -3,8 +3,6 @@ alter table bmsql_warehouse add constraint bmsql_warehouse_pkey
   primary key (w_id);
 
 alter table bmsql_district add constraint bmsql_district_pkey
-  primary key (d_w_id, d_id);
-
 alter table bmsql_customer add constraint bmsql_customer_pkey
   primary key (c_w_id, c_d_id, c_id);
 

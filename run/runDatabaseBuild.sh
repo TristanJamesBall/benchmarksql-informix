@@ -18,10 +18,25 @@ AFTER_LOAD="indexCreates foreignKeys extraHistID buildFinish"
 
 for step in ${BEFORE_LOAD} ; do
     ./runSQL.sh "${PROPS}" $step
+    RET=$?
+    if [ "${RET}" -ne 0 ]; then
+        echo "Errors from $step, aborting.."
+        exit 255;
+    fi
 done
 
 ./runLoader.sh "${PROPS}" $*
+RET=$?
+if [ "${RET}" -ne 0 ]; then
+        echo "Errors from loader, aborting.."
+        exit 255;
+fi
 
 for step in ${AFTER_LOAD} ; do
     ./runSQL.sh "${PROPS}" $step
+    RET=$?
+    if [ "${RET}" -ne 0 ]; then
+        echo "Errors from $step, aborting.."
+        exit 255;
+    fi
 done
