@@ -3,6 +3,9 @@ BENCHMARKSQL README
 
 CHANGE LOG:
 -----------
+Version 5.0.informix tristanb:
+--------------------------------------
+  + Add informix support
 
 Version 5.0 lussman & jannicash:
 --------------------------------------
